@@ -1,0 +1,1058 @@
+
+Aport: 7890
+socks-port: 7891
+redir-port: 7892
+mixed-port: 7893
+allow-lan: true
+mode: Rule
+log-level: info
+ipv6: true
+external-controller: 0.0.0.0:9090
+profile:
+  tracing: true
+geox-url:
+  geoip: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.dat"
+  geosite: "https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geosite.dat"
+  mmdb: https://mirror.ghproxy.com/https://github.com/MetaCubeX/meta-rules-dat/releases/download/latest/geoip-lite.metadb
+  asn: https://mirror.ghproxy.com/https://github.com/xishang0128/geoip/releases/download/latest/GeoLite2-ASN.mmdb
+dns:
+  enable: true
+  listen: 127.0.0.1:8853
+  default-nameserver:
+    - tls://1.1.1.1/dns-query
+  ipv6: false
+  enhanced-mode: redir-host
+  nameserver:
+    - https://dns.cloudflare.com/dns-query?
+    - https://dns.google/dns-query?
+  nameserver-policy:
+    'geosite:geolocation-!cn': [tls://8.8.4.4, https://1.0.0.1/dns-query]
+    'rule-set:Rule_Google,Rule_GoogleFCM,Rule_Microsoft,Rule_Bing,Rule_Copilot,Rule_Xbox,Rule_GameDownloadCN,Rule_Cloudflarecn': [tls://8.8.4.4, https://1.1.1.1/dns-query]
+    'geosite:cn': [tls://223.5.5.5/dns-query,tls://1.12.12.12/dns-query,https://1.12.12.12/dns-query]
+    'rule-set:Rule_ChinaMax': [tls://223.5.5.5/dns-query,tls://1.12.12.12/dns-query,https://1.12.12.12/dns-query]
+
+proxies:
+# 填写代理
+
+proxy-providers:
+#机场1
+  provider1:
+    type: http
+    url: "[机场订阅链接]"   #【在此填入机场订阅链接】
+    path: ./Providers_Proxy/provider1.yaml
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+#机场2（只有一个机场就把这一段删除）
+  provider2:  #每个机场名字不能一样
+    type: http
+    url: "[机场订阅链接]" #【在此填入机场订阅链接】
+    path: ./Providers_Proxy/provider2.yaml  #增加机场记得改后面这个文件名称
+    interval: 86400
+    health-check:
+      enable: true
+      url: https://www.gstatic.com/generate_204
+      interval: 300
+      timeout: 5000
+      expected-status: 204
+
+#……以此类推
+
+
+proxy-groups:
+# 代理
+- name: 默认代理
+  type: select
+  proxies:
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+
+# 分流
+- name: 境内网络
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Apple
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Google
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Microsoft
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Binance
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Bing
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Bitwarden
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Cloudflare
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Discord
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Docker
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Figma
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: GitHub
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Instagram
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Minecraft
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Notion
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: OpenAI
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: PayPal
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: PicACG
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: PikPak
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true  
+- name: Pixiv
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Reddit
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Rutraker
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Speedtest
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Spotify
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Telegram
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: TikTok
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: 𝕏(Twitter)
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: YouTube
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: Z-Library
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: 游戏网络
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: 游戏下载
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: PT下载
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: 广告
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+- name: 未匹配
+  type: select
+  proxies:
+    - 默认代理
+    - DIRECT
+    - REJECT
+    - PASS
+    - 香港[自动选择]
+    - 台湾[自动选择]
+    - 狮城[自动选择]
+    - 日本[自动选择]
+    - 韩国[自动选择]
+    - 美国[自动选择]
+  include-all: true
+
+# 国家
+- name: 香港[自动选择]
+  type: url-test
+  include-all: true
+  url: "https://www.gstatic.com/generate_204"
+  interval: 300
+  filter: (?i)(港|HK|Hong)
+
+- name: 台湾[自动选择]
+  type: url-test
+  include-all: true
+  url: "https://www.gstatic.com/generate_204"
+  interval: 300
+  filter: "(?i)(台|TW|Tai)"
+
+- name: 狮城[自动选择]
+  type: url-test
+  include-all: true
+  url: "https://www.gstatic.com/generate_204"
+  interval: 300
+  filter: "(?i)(新加坡|坡|狮城|SG|Singapore)"
+
+- name: 日本[自动选择]
+  type: url-test
+  include-all: true
+  url: "https://www.gstatic.com/generate_204"
+  interval: 300
+  filter: "(?i)(日本|川日|东京|大阪|泉日|埼玉|沪日|深日|JP|Japan)"
+
+- name: 韩国[自动选择]
+  type: url-test
+  include-all: true
+  url: "https://www.gstatic.com/generate_204"
+  interval: 300
+  filter: "(?i)(KR|Korea|KOR|首尔|韩|韓)"
+
+- name: 美国[自动选择]
+  type: url-test
+  include-all: true
+  url: "https://www.gstatic.com/generate_204"
+  interval: 300
+  filter: "(?i)(美|波特兰|达拉斯|俄勒冈|凤凰城|费利蒙|硅谷|拉斯维加斯|洛杉矶|圣何塞|圣克拉拉|西雅图|芝加哥|US|United States)"
+
+rules:
+  - PROCESS-NAME,mihomo,默认代理
+  - SUB-RULE,(RULE-SET,Rule_AdG),sub-rule-AdG
+  - RULE-SET,Rule_Ad,广告
+  - RULE-SET,Rule_PikPak_Chk,广告
+  - RULE-SET,Rule_Hijack⁺,广告
+  - RULE-SET,Rule_Apple,Apple
+  - RULE-SET,Rule_Beats,Apple
+  - RULE-SET,Rule_AppleID,Apple
+  - RULE-SET,Rule_AppleDev,Apple
+  - RULE-SET,Rule_SystemOTA,Apple
+  - RULE-SET,Rule_Google,Google
+  - RULE-SET,Rule_GoogleFCM,Google
+  - RULE-SET,Rule_BardAI,Google
+  - RULE-SET,Rule_Gemini,Google 
+  - RULE-SET,Rule_OpenAI,OpenAI
+  - RULE-SET,Rule_Copilot,Bing
+  - RULE-SET,Rule_Bing,Bing
+  - RULE-SET,Rule_Microsoft,Microsoft
+  - RULE-SET,Rule_Xbox,Microsoft
+  - RULE-SET,Rule_Binance,Binance
+  - DOMAIN-SUFFIX,binance.info,Binance
+  - RULE-SET,Rule_Bitwarden,Bitwarden
+  - RULE-SET,Rule_Discord,Discord
+  - RULE-SET,Rule_Docker,Docker
+  - RULE-SET,Rule_Figma,Figma
+  - RULE-SET,Rule_GitHub,GitHub
+  - RULE-SET,Rule_Instagram,Instagram
+  - RULE-SET,Rule_Mojang,Minecraft
+  - RULE-SET,Rule_Notion,Notion
+  - RULE-SET,Rule_PayPal,PayPal
+  - RULE-SET,Rule_Picacg,PicACG
+  - RULE-SET,Rule_PikPak,PikPak
+  - RULE-SET,Rule_Pixiv,Pixiv
+  - RULE-SET,Rule_Reddit,Reddit
+  - RULE-SET,Rule_Rutraker,Rutraker
+  - RULE-SET,Rule_Spotify,Spotify
+  - RULE-SET,Rule_Telegram,Telegram
+  - RULE-SET,Rule_TikTok,TikTok
+  - RULE-SET,Rule_Twitter,𝕏(Twitter)
+  - RULE-SET,Rule_YouTubeMusic,YouTube
+  - RULE-SET,Rule_YouTube,YouTube
+  - RULE-SET,Rule_z-library,Z-Library
+  - RULE-SET,Rule_Cloudflarecn,Cloudflare
+  - RULE-SET,Rule_Cloudflare,Cloudflare
+  - RULE-SET,Rule_Speedtest,Speedtest
+  - RULE-SET,Rule_GameDownloadCN,游戏下载
+  - RULE-SET,Rule_GameDownload,游戏下载
+  # - RULE-SET,Rule_SteamCN⁺,游戏下载
+  - RULE-SET,Rule_Game,游戏网络
+  - RULE-SET,Rule_PrivateTracke,PT下载
+  - RULE-SET,Rule_Proxy,默认代理
+  - RULE-SET,Rule_ChinaMax,境内网络
+  - MATCH,未匹配
+sub-rules:
+  sub-rule-AdG:
+    - NOT,((RULE-SET,Rule_AdG_Direct)),广告
+rule-providers:
+  Rule_Apple:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Apple/Apple.list
+    path: ./Providers_Rule/Apple.list
+    interval: 86400
+    format: text
+
+  Rule_Beats:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Beats/Beats.list
+    path: ./Providers_Rule/Beats.list
+    interval: 86400
+    format: text
+
+  Rule_AppleID:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleID/AppleID.list
+    path: ./Providers_Rule/AppleID.list
+    interval: 86400
+    format: text
+
+  Rule_AppleDev:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AppleDev/AppleDev.list
+    path: ./Providers_Rule/AppleDev.list
+    interval: 86400
+    format: text
+
+  Rule_SystemOTA:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/SystemOTA/SystemOTA.list
+    path: ./Providers_Rule/SystemOTA.list
+    interval: 86400
+    format: text
+
+  Rule_Google:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Google/Google.list
+    path: ./Providers_Rule/Google.list
+    interval: 86400
+    format: text
+
+  Rule_GoogleFCM:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GoogleFCM/GoogleFCM.list
+    path: ./Providers_Rule/GoogleFCM.list
+    interval: 86400
+    format: text
+
+  Rule_BardAI:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/BardAI/BardAI.list
+    path: ./Providers_Rule/BardAI.list
+    interval: 86400
+    format: text
+
+  Rule_Gemini:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Gemini/Gemini.list
+    path: ./Providers_Rule/Gemini.list
+    interval: 86400
+    format: text
+
+  Rule_Microsoft:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Microsoft/Microsoft.list
+    path: ./Providers_Rule/Microsoft.list
+    interval: 86400
+    format: text
+
+  Rule_Xbox:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Xbox/Xbox.list
+    path: ./Providers_Rule/Xbox.list
+    interval: 86400
+    format: text
+
+  Rule_Binance:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Binance/Binance.list
+    path: ./Providers_Rule/Binance.list
+    interval: 86400
+    format: text
+
+  Rule_Copilot:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Copilot/Copilot.list
+    path: ./Providers_Rule/Copilot.list
+    interval: 86400
+    format: text
+
+  Rule_Bing:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Bing/Bing.list
+    path: ./Providers_Rule/Bing.list
+    interval: 86400
+    format: text
+
+  Rule_Bitwarden:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/Bitwarden.list
+    path: ./Providers_Rule/Bitwarden.list
+    interval: 86400
+    format: text
+
+  Rule_Cloudflarecn:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloudflarecn/Cloudflarecn.list
+    path: ./Providers_Rule/Cloudflarecn.list
+    interval: 86400
+    format: text
+
+  Rule_Cloudflare:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Cloudflare/Cloudflare.list
+    path: ./Providers_Rule/Cloudflare.list
+    interval: 86400
+    format: text
+
+  Rule_Discord:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Discord/Discord.list
+    path: ./Providers_Rule/Discord.list
+    interval: 86400
+    format: text
+
+  Rule_Docker:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Docker/Docker.list
+    path: ./Providers_Rule/Docker.list
+    interval: 86400
+    format: text
+
+  Rule_Figma:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Figma/Figma.list
+    path: ./Providers_Rule/Figma.list
+    interval: 86400
+    format: text
+
+  Rule_GitHub:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/GitHub/GitHub.list
+    path: ./Providers_Rule/GitHub.list
+    interval: 86400
+    format: text
+
+  Rule_Instagram:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Instagram/Instagram.list
+    path: ./Providers_Rule/Instagram.list
+    interval: 86400
+    format: text
+
+  Rule_Mojang:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/Mojang.list
+    path: ./Providers_Rule/Mojang.list
+    interval: 86400
+    format: text
+
+  Rule_Notion:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Notion/Notion.list
+    path: ./Providers_Rule/Notion.list
+    interval: 86400
+    format: text
+
+  Rule_OpenAI:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/OpenAI/OpenAI.list
+    path: ./Providers_Rule/OpenAI.list
+    interval: 86400
+    format: text
+
+  Rule_PayPal:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PayPal/PayPal.list
+    path: ./Providers_Rule/PayPal.list
+    interval: 86400
+    format: text
+
+  Rule_Picacg:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Picacg/Picacg.list
+    path: ./Providers_Rule/Picacg.list
+    interval: 86400
+    format: text
+
+  Rule_Reddit:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Reddit/Reddit.list
+    path: ./Providers_Rule/Reddit.list
+    interval: 86400
+    format: text
+
+  Rule_Rutraker:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/Rutraker.list
+    path: ./Providers_Rule/Rutraker.list
+    interval: 86400
+    format: text
+
+  Rule_Speedtest:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Speedtest/Speedtest.list
+    path: ./Providers_Rule/Speedtest.list
+    interval: 86400
+    format: text
+
+  Rule_Spotify:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Spotify/Spotify.list
+    path: ./Providers_Rule/Spotify.list
+    interval: 86400
+    format: text
+
+  Rule_Telegram:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Telegram/Telegram.list
+    path: ./Providers_Rule/Telegram.list
+    interval: 86400
+    format: text
+
+  Rule_TikTok:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/TikTok/TikTok.list
+    path: ./Providers_Rule/TikTok.list
+    interval: 86400
+    format: text
+
+  Rule_Twitter:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Twitter/Twitter.list
+    path: ./Providers_Rule/Twitter.list
+    interval: 86400
+    format: text
+
+  Rule_YouTubeMusic:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTubeMusic/YouTubeMusic.list
+    path: ./Providers_Rule/YouTubeMusic.list
+    interval: 86400
+    format: text
+
+  Rule_YouTube:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/YouTube/YouTube.list
+    path: ./Providers_Rule/YouTube.list
+    interval: 86400
+    format: text
+
+  Rule_z-library:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/z-library.list
+    path: ./Providers_Rule/z-library.list
+    interval: 86400
+    format: text
+
+  Rule_Game:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/Game.list
+    path: ./Providers_Rule/Game.list
+    interval: 86400
+    format: text
+
+  Rule_GameDownloadCN:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/GameDownloadCN/GameDownloadCN.list
+    path: ./Providers_Rule/GameDownloadCN.list
+    interval: 86400
+    format: text
+
+  Rule_GameDownload:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Game/GameDownload/GameDownload.list
+    path: ./Providers_Rule/GameDownload.list
+    interval: 86400
+    format: text
+
+  Rule_PrivateTracke:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PrivateTracker/PrivateTracker.list
+    path: ./Providers_Rule/PrivateTracke.list
+    interval: 86400
+    format: text
+
+  Rule_Proxy:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Proxy/Proxy.list
+    path: ./Providers_Rule/Proxy.list
+    interval: 86400
+    format: text
+  Rule_ChinaMax:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/ChinaMax/ChinaMax.list
+    path: ./Providers_Rule/ChinaMax.list
+    interval: 86400
+    format: text
+  Rule_Ad:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Advertising/Advertising.list
+    path: ./Providers_Rule/Ad.list
+    interval: 86400
+    format: text
+  Rule_AdG:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AdGuardSDNSFilter/AdGuardSDNSFilter.list
+    path: ./Providers_Rule/AdG.list
+    interval: 86400
+    format: text
+  Rule_AdG_Direct:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/AdGuardSDNSFilter/Direct/Direct.list
+    path: ./Providers_Rule/AdG_Direct.list
+    interval: 86400
+    format: text
+  Rule_Hijack⁺:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/Hijack%E2%81%BA.list
+    path: ./Providers_Rule/Hijack⁺.list
+    interval: 86400
+    format: text
+  # Rule_SteamCN⁺:
+  #   type: http
+  #   behavior: classical
+  #   url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/SteamCN%E2%81%BA.list
+  #   path: ./Providers_Rule/SteamCN⁺.list
+  #   interval: 86400
+  #   format: text
+  Rule_PikPak_Chk:
+    type: http
+    behavior: domain
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/Mikihta/Rule/main/Ruleset/PikPak_Chk.list
+    path: ./Providers_Rule/PikPak_Chk.list
+    interval: 86400
+    format: text
+  Rule_PikPak:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/PikPak/PikPak.list
+    path: ./Providers_Rule/PikPak.list
+    interval: 86400
+    format: text
+  Rule_Pixiv:
+    type: http
+    behavior: classical
+    url: https://mirror.ghproxy.com/https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Clash/Pixiv/Pixiv.list
+    path: ./Providers_Rule/Pixiv.list
+    interval: 86400
+    format: text
